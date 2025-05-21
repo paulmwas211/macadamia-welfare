@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
