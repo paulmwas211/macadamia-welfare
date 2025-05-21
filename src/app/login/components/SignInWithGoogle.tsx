@@ -1,9 +1,11 @@
+// 📁 src/components/SignInWithGoogle.tsx
 "use client";
 
-import { supabase } from "@/utils/supabase/client";
+import { Button } from "./ui/button";
+import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import { supabase } from "@/utils/supabase/client";
 
 export default function SignInWithGoogle() {
   const router = useRouter();
@@ -19,12 +21,21 @@ export default function SignInWithGoogle() {
   };
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
         router.push("/dashboard");
       }
     });
-  }, []);
 
-  return <Button onClick={handleSignIn}>Sign in with Google</Button>;
+    return () => subscription.unsubscribe(); // cleanup
+  }, [router]);
+
+  return (
+    <Button variant="outline" onClick={handleSignIn} className="w-full">
+      <FcGoogle className="mr-2 h-5 w-5" />
+      Sign in with Google
+    </Button>
+  );
 }
